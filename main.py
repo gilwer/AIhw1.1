@@ -27,14 +27,7 @@ def plot_distance_and_expanded_wrt_weight_figure(
     assert len(weights) == len(total_distance) == len(total_expanded)
 
     fig, ax1 = plt.subplots()
-
-    # TODO: Plot the total distances with ax1. Use `ax1.plot(...)`.
-    # TODO: Make this curve colored blue with solid line style.
-    # See documentation here:
-    # https://matplotlib.org/2.0.0/api/_as_gen/matplotlib.axes.Axes.plot.html
-    # You can also search google for additional examples.
-    raise NotImplemented()
-
+    ax1.plot(weights, total_distance, 'b-')
     # ax1: Make the y-axis label, ticks and tick labels match the line color.
     ax1.set_ylabel('distance traveled', color='b')
     ax1.tick_params('y', colors='b')
@@ -42,12 +35,10 @@ def plot_distance_and_expanded_wrt_weight_figure(
 
     # Create another axis for the #expanded curve.
     ax2 = ax1.twinx()
-
-    # TODO: Plot the total expanded with ax2. Use `ax2.plot(...)`.
-    # TODO: ax2: Make the y-axis label, ticks and tick labels match the line color.
-    # TODO: Make this curve colored red with solid line style.
-    raise NotImplemented()
-
+    ax2.plot(weights, total_expanded, 'r-')
+    ax2.set_ylabel('states expanded', color='r')
+    ax2.tick_params('y', colors='r')
+    ax2.set_xlabel('weight')
     fig.tight_layout()
     plt.show()
 
@@ -56,15 +47,25 @@ def run_astar_for_weights_in_range(heuristic_type: HeuristicFunctionType, proble
     # TODO:
     # 1. Create an array of 20 numbers equally spreaded in [0.5, 1]
     #    (including the edges). You can use `np.linspace()` for that.
+    sample_array = np.linspace(0.5,1,20)
+    cost_array = []
+    expanded_array = []
+    for sample in sample_array:
+        star = AStar(heuristic_type,sample)
+        res = star.solve_problem(problem)
+        cost_array.append(res.final_search_node.cost)
+        expanded_array.append(res.nr_expanded_states)
+    plot_distance_and_expanded_wrt_weight_figure(sample_array, cost_array, expanded_array)
+
     # 2. For each weight in that array run the A* algorithm, with the
-    #    given `heuristic_type` over the map problem. For each such run,
+    #    given `heuristic_type` over the map problem. For each such run, =
     #    store the cost of the solution (res.final_search_node.cost)
     #    and the number of expanded states (res.nr_expanded_states).
     #    Store these in 2 lists (array for the costs and array for
     #    the #expanded.
     # Call the function `plot_distance_and_expanded_by_weight_figure()`
     #  with that data.
-    raise NotImplemented()  # TODO: remove!
+
 
 
 def map_problem():
@@ -77,27 +78,18 @@ def map_problem():
     res = uc.solve_problem(map_prob)
     print(res)
 
-    # Ex.10
-    # TODO: create an instance of `AStar` with the `NullHeuristic`,
-    #       solve the same `map_prob` with it and print the results (as before).
-    # Notice: AStar constructor receives the heuristic *type* (ex: `MyHeuristicClass`),
-    #         and not an instance of the heuristic (eg: not `MyHeuristicClass()`).
-    exit()  # TODO: remove!
+    astar = AStar(NullHeuristic)
+    res = astar.solve_problem(map_prob)
+    print(res)
 
-    # Ex.11
-    # TODO: create an instance of `AStar` with the `AirDistHeuristic`,
-    #       solve the same `map_prob` with it and print the results (as before).
-    exit()  # TODO: remove!
+    astar = AStar(AirDistHeuristic)
+    res = astar.solve_problem(map_prob)
+    print(res)
 
-    # Ex.12
-    # TODO:
-    # 1. Complete the implementation of the function
-    #    `run_astar_for_weights_in_range()` (upper in this file).
-    # 2. Complete the implementation of the function
-    #    `plot_distance_and_expanded_by_weight_figure()`
-    #    (upper in this file).
-    # 3. Call here the function `run_astar_for_weights_in_range()`
-    #    with `AirDistHeuristic` and `map_prob`.
+    run_astar_for_weights_in_range(AirDistHeuristic,map_prob)
+
+
+
     exit()  # TODO: remove!
 
 

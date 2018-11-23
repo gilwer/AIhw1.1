@@ -39,7 +39,10 @@ class RelaxedDeliveriesState(GraphProblemState):
         TODO: implement this method!
         Notice: Never compare floats using `==` operator! Use `fuel_as_int` instead of `fuel`.
         """
-        raise NotImplemented()  # TODO: remove!
+        assert isinstance(other, RelaxedDeliveriesState)
+        return self.current_location == other.current_location and \
+               self.fuel_as_int == other.fuel_as_int and\
+               self.dropped_so_far == other.dropped_so_far
 
     def __hash__(self):
         """
@@ -53,7 +56,7 @@ class RelaxedDeliveriesState(GraphProblemState):
                 Otherwise the upper requirement would not met.
                 In our case, use `fuel_as_int`.
         """
-        raise NotImplemented()  # TODO: remove!
+        return hash((self.current_location, self.fuel_as_int, self.dropped_so_far))
 
     def __str__(self):
         """
