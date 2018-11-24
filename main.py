@@ -104,14 +104,14 @@ def relaxed_deliveries_problem():
     big_delivery = DeliveriesProblemInput.load_from_file('big_delivery.in', roads)
     big_deliveries_prob = RelaxedDeliveriesProblem(big_delivery)
 
-    astar = AStar(MaxAirDistHeuristic)
-    res = astar.solve_problem(big_deliveries_prob)
-    print(res)
-
-    astar = AStar(MSTAirDistHeuristic)
-    res = astar.solve_problem(big_deliveries_prob)
-    print(res)
-    run_astar_for_weights_in_range(MSTAirDistHeuristic, big_deliveries_prob)
+   #  astar = AStar(MaxAirDistHeuristic)
+   # res = astar.solve_problem(big_deliveries_prob)
+   #  print(res)
+   #
+   #  astar = AStar(MSTAirDistHeuristic)
+   #  res = astar.solve_problem(big_deliveries_prob)
+   #  print(res)
+  #  run_astar_for_weights_in_range(MSTAirDistHeuristic, big_deliveries_prob)
 
 
     # Ex.18
@@ -127,7 +127,7 @@ def relaxed_deliveries_problem():
     stochastic = GreedyStochastic(MSTAirDistHeuristic)
     costs = []
     anytime =[]
-    k= 100
+    k= 50
     for i in range(k):
         costs.append(stochastic.solve_problem(big_deliveries_prob).final_search_node.cost)
         anytime.append( min(anytime[i-1], costs[i]) if i > 0 else costs[i] )
@@ -138,8 +138,8 @@ def relaxed_deliveries_problem():
     #    algorithm is the MINIMUM among the costs of the solutions
     #    found in iterations {1,...,i}. Calculate the costs of the
     #    anytime algorithm wrt the #iteration and store them in a list.
-    astar_res2 = AStar(MSTAirDistHeuristic,0.5).solve_problem(big_deliveries_prob).final_search_node.cost
-    gredy_res = AStar(MSTAirDistHeuristic,1).solve_problem(big_deliveries_prob).final_search_node.cost
+    astar_res2 = [AStar(MSTAirDistHeuristic,0.5).solve_problem(big_deliveries_prob).final_search_node.cost]*k
+    gredy_res = [AStar(MSTAirDistHeuristic,1).solve_problem(big_deliveries_prob).final_search_node.cost]*k
     # 3. Calculate and store the cost of the solution received by
     #    the A* algorithm (with w=0.5).
     # 4. Calculate and store the cost of the solution received by
@@ -149,9 +149,9 @@ def relaxed_deliveries_problem():
     #    greedy are not dependent with the iteration number, so
     #    these two should be represented by horizontal lines.
 
-    plt.plot(range(k+1), anytime, label="anytime")
-    plt.plot(range(k + 1), astar_res2, label="Astar")
-    plt.plot(range(k + 1), gredy_res, label="Greedy")
+    plt.plot(range(k), anytime, label="anytime")
+    plt.plot(range(k), astar_res2, label="Astar")
+    plt.plot(range(k), gredy_res, label="Greedy")
     plt.xlabel("Iter")
     plt.ylabel("cost")
     plt.title("Stochastic as a function of the Iteration")
@@ -181,7 +181,7 @@ def strict_deliveries_problem():
 
 
 def main():
-    map_problem()
+  #  map_problem()
     relaxed_deliveries_problem()
     strict_deliveries_problem()
 
