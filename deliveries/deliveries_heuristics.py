@@ -21,7 +21,12 @@ class MaxAirDistHeuristic(HeuristicFunction):
         assert isinstance(self.problem, RelaxedDeliveriesProblem)
         assert isinstance(state, RelaxedDeliveriesState)
 
-        raise NotImplemented()  # TODO: remove!
+        remaining_drop_points = self.problem.drop_points.difference(state.dropped_so_far)
+        if remaining_drop_points.__len__() == 0:
+            return 0
+        max_air_dist = max(remaining_drop_points, key=state.current_location.calc_air_distance_from)
+
+        return state.current_location.calc_air_distance_from(max_air_dist)
 
 
 class MSTAirDistHeuristic(HeuristicFunction):
