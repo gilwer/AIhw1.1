@@ -49,9 +49,8 @@ class RelaxedDeliveriesState(GraphProblemState):
         This method is used to create a hash of a state.
         It is critical that two objects representing the same state would have the same hash!
 
-        TODO: implement this method!
+
         A common implementation might be something in the format of:
-        >>> return hash((self.some_field1, self.some_field2, self.some_field3))
         Notice: Do NOT give float fields to `hash(...)`.
                 Otherwise the upper requirement would not met.
                 In our case, use `fuel_as_int`.
