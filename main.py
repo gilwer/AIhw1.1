@@ -90,7 +90,6 @@ def map_problem():
 
 
 
-    exit()  # TODO: remove!
 
 
 # --------------------------------------------------------------------
@@ -105,6 +104,9 @@ def relaxed_deliveries_problem():
     big_delivery = DeliveriesProblemInput.load_from_file('big_delivery.in', roads)
     big_deliveries_prob = RelaxedDeliveriesProblem(big_delivery)
 
+    astar = AStar(MaxAirDistHeuristic)
+    res = astar.solve_problem(big_deliveries_prob)
+    print(res)
     # Ex.16
     # TODO: create an instance of `AStar` with the `MaxAirDistHeuristic`,
     #       solve the `big_deliveries_prob` with it and print the results (as before).

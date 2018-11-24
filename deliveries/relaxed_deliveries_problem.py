@@ -100,12 +100,11 @@ class RelaxedDeliveriesProblem(GraphProblem):
             if state_to_expand.current_location.calc_air_distance_from(point)>state_to_expand.fuel:
                 continue
             if point in self.gas_stations:
-                yield RelaxedDeliveriesState(point, state_to_expand.dropped_so_far, self.gas_tank_capacity),\
-                      state_to_expand.current_location.calc_air_distance_from(point)
-            else:
-                yield RelaxedDeliveriesState(point, state_to_expand.dropped_so_far
-                                             .difference({state_to_expand.current_location})
-                                             , state_to_expand.fuel - state_to_expand.current_location
+                yield (RelaxedDeliveriesState(point, state_to_expand.dropped_so_far, self.gas_tank_capacity), state_to_expand.current_location.calc_air_distance_from(point))
+                continue
+            if point in self.drop_points:
+                yield RelaxedDeliveriesState(point, state_to_expand.dropped_so_far.union({point}),
+                                             state_to_expand.fuel - state_to_expand.current_location
                                              .calc_air_distance_from(point)), state_to_expand.current_location\
                     .calc_air_distance_from(point)
 
@@ -116,7 +115,6 @@ class RelaxedDeliveriesProblem(GraphProblem):
         """
         assert isinstance(state, RelaxedDeliveriesState)
         return state.dropped_so_far == self.drop_points
-
 
     def solution_additional_str(self, result: 'SearchResult') -> str:
         """This method is used to enhance the printing method of a found solution."""
