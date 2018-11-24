@@ -94,8 +94,20 @@ class RelaxedDeliveriesProblem(GraphProblem):
         For each successor, a pair of the successor state and the operator cost is yielded.
         """
         assert isinstance(state_to_expand, RelaxedDeliveriesState)
-
-        raise NotImplemented()  # TODO: remove!
+        for point in self.possible_stop_points:
+            if point in state_to_expand.dropped_so_far:
+                continue
+            if state_to_expand.current_location.calc_air_distance_from(point)>state_to_expand.fuel:
+                continue
+            if point in self.gas_stations:
+                yield RelaxedDeliveriesState(point, state_to_expand.dropped_so_far, self.gas_tank_capacity),\
+                      state_to_expand.current_location.calc_air_distance_from(point)
+            else:
+                yield RelaxedDeliveriesState(point, state_to_expand.dropped_so_far
+                                             .difference({state_to_expand.current_location})
+                                             , state_to_expand.fuel - state_to_expand.current_location
+                                             .calc_air_distance_from(point)), state_to_expand.current_location\
+                    .calc_air_distance_from(point)
 
     def is_goal(self, state: GraphProblemState) -> bool:
         """
@@ -103,8 +115,8 @@ class RelaxedDeliveriesProblem(GraphProblem):
         TODO: implement this method!
         """
         assert isinstance(state, RelaxedDeliveriesState)
+        return state.dropped_so_far == self.drop_points
 
-        raise NotImplemented()  # TODO: remove!
 
     def solution_additional_str(self, result: 'SearchResult') -> str:
         """This method is used to enhance the printing method of a found solution."""
