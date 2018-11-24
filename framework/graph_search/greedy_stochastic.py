@@ -63,6 +63,15 @@ class GreedyStochastic(BestFirstSearch):
         for i in range(self.N):
              X[i]=(self.open.pop_next_node())
         deno = 0
-        for j in range(5):
-            deno += pow(X[j], -1 / self.T)
-
+        for j in range(self.N):
+            deno += pow(X[j].expanding_priority, -1 / self.T)
+        P = []
+        for i in range(self.N):
+            P[i] = pow(X[i].expanding_priority, -1 / self.T)/deno
+        res = np.random.choice(X, None, False, P)
+        self.T = self.T*self.T_scale_factor
+        for state in X:
+            if state == res:
+                continue
+            self.open.push_node(state)
+        return res
