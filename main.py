@@ -17,7 +17,7 @@ Consts.set_seed()
 # --------------------------------------------------------------------
 
 def plot_distance_and_expanded_wrt_weight_figure(
-        weights: Union[np.ndarray, List[float]],
+            weights: Union[np.ndarray, List[float]],
         total_distance: Union[np.ndarray, List[float]],
         total_expanded: Union[np.ndarray, List[int]]):
     """
@@ -113,20 +113,24 @@ def relaxed_deliveries_problem():
     print(res)
     run_astar_for_weights_in_range(MSTAirDistHeuristic, big_deliveries_prob)
 
-    run_astar_for_weights_in_range(NullHeuristic, big_deliveries_prob)
-    run_astar_for_weights_in_range(MaxAirDistHeuristic, big_deliveries_prob)
-
 
     # Ex.18
     # TODO: Call here the function `run_astar_for_weights_in_range()`
     #       with `MSTAirDistHeuristic` and `big_deliveries_prob`.
-    exit()  # TODO: remove!
+
 
     # Ex.24
     # TODO:
     # 1. Run the stochastic greedy algorithm for 100 times.
     #    For each run, store the cost of the found solution.
     #    Store these costs in a list.
+    stochastic = GreedyStochastic(MSTAirDistHeuristic)
+    costs = []
+    anytime =[]
+    k= 100
+    for i in range(k):
+        costs[i] = stochastic.solve_problem(big_deliveries_prob).final_search_node.cost
+        anytime[i] = min(anytime[i-1], costs[i]) if i > 0 else costs[i]
     # 2. The "Anytime Greedy Stochastic Algorithm" runs the greedy
     #    greedy stochastic for N times, and after each iteration
     #    stores the best solution found so far. It means that after
@@ -134,6 +138,8 @@ def relaxed_deliveries_problem():
     #    algorithm is the MINIMUM among the costs of the solutions
     #    found in iterations {1,...,i}. Calculate the costs of the
     #    anytime algorithm wrt the #iteration and store them in a list.
+    astar_res2 = AStar(MSTAirDistHeuristic,0.5).solve_problem(big_deliveries_prob).final_search_node.cost
+    gredy_res = AStar(MSTAirDistHeuristic,1).solve_problem(big_deliveries_prob).final_search_node.cost
     # 3. Calculate and store the cost of the solution received by
     #    the A* algorithm (with w=0.5).
     # 4. Calculate and store the cost of the solution received by
@@ -142,7 +148,17 @@ def relaxed_deliveries_problem():
     #    (x-axis). Of course that the costs of A*, and deterministic
     #    greedy are not dependent with the iteration number, so
     #    these two should be represented by horizontal lines.
-    exit()  # TODO: remove!
+
+    plt.plot(range(k+1), anytime, label="anytime")
+    plt.plot(range(k + 1), astar_res2, label="Astar")
+    plt.plot(range(k + 1), gredy_res, label="Greedy")
+    plt.xlabel("Iter")
+    plt.ylabel("cost")
+    plt.title("Stochastic as a function of the Iteration")
+    plt.legend()
+    plt.grid()
+    plt.show()
+
 
 
 def strict_deliveries_problem():
