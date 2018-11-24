@@ -24,16 +24,25 @@ class GreedyStochastic(BestFirstSearch):
         """
         TODO: implement this method!
         """
-
-        raise NotImplemented()  # TODO: remove!
+        if self.open.has_state(successor_node.state):
+            old_node = self.open.get_node_by_state(successor_node.state)
+            if old_node.expanding_priority > successor_node.expanding_priority:
+                self.open.extract_node(old_node)
+                self.open.push_node(successor_node)
+        elif self.close.has_state(successor_node.state):
+            old_node = self.close.get_node_by_state(successor_node.state)
+            if old_node.expanding_priority > successor_node.expanding_priority:
+                self.close.remove_node(old_node)
+                self.open.push_node(successor_node)
+        else:
+            self.open.push_node(successor_node)
 
     def _calc_node_expanding_priority(self, search_node: SearchNode) -> float:
         """
         TODO: implement this method!
         Remember: `GreedyStochastic` is greedy.
         """
-
-        raise NotImplemented()  # TODO: remove!
+        return self.heuristic_function.estimate(search_node.state)
 
     def _extract_next_search_node_to_expand(self) -> Optional[SearchNode]:
         """
@@ -50,5 +59,10 @@ class GreedyStochastic(BestFirstSearch):
                 of these popped items. The other items have to be
                 pushed again into that queue.
         """
+        X = []
+        for i in range(self.N):
+             X[i]=(self.open.pop_next_node())
+        deno = 0
+        for j in range(5):
+            deno += pow(X[j], -1 / self.T)
 
-        raise NotImplemented()  # TODO: remove!

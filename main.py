@@ -111,8 +111,11 @@ def relaxed_deliveries_problem():
     astar = AStar(MSTAirDistHeuristic)
     res = astar.solve_problem(big_deliveries_prob)
     print(res)
-    run_astar_for_weights_in_range(MaxAirDistHeuristic, big_deliveries_prob)
     run_astar_for_weights_in_range(MSTAirDistHeuristic, big_deliveries_prob)
+
+    run_astar_for_weights_in_range(NullHeuristic, big_deliveries_prob)
+    run_astar_for_weights_in_range(MaxAirDistHeuristic, big_deliveries_prob)
+
 
     # Ex.18
     # TODO: Call here the function `run_astar_for_weights_in_range()`
