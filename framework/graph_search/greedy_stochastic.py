@@ -60,14 +60,17 @@ class GreedyStochastic(BestFirstSearch):
                 pushed again into that queue.
         """
         X = []
-        for i in range(self.N):
-             X[i]=(self.open.pop_next_node())
+        n = min(self.N, len(self.open))
+        for i in range(n):
+             X.append(self.open.pop_next_node())
+
+             if X[i].expanding_priority == 0.0: return X[i]
         deno = 0
-        for j in range(self.N):
+        for j in range(n):
             deno += pow(X[j].expanding_priority, -1 / self.T)
         P = []
-        for i in range(self.N):
-            P[i] = pow(X[i].expanding_priority, -1 / self.T)/deno
+        for i in range(n):
+            P.append(pow(X[i].expanding_priority, -1 / self.T)/deno)
         res = np.random.choice(X, None, False, P)
         self.T = self.T*self.T_scale_factor
         for state in X:

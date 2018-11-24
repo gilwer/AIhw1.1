@@ -129,8 +129,8 @@ def relaxed_deliveries_problem():
     anytime =[]
     k= 100
     for i in range(k):
-        costs[i] = stochastic.solve_problem(big_deliveries_prob).final_search_node.cost
-        anytime[i] = min(anytime[i-1], costs[i]) if i > 0 else costs[i]
+        costs.append(stochastic.solve_problem(big_deliveries_prob).final_search_node.cost)
+        anytime.append( min(anytime[i-1], costs[i]) if i > 0 else costs[i] )
     # 2. The "Anytime Greedy Stochastic Algorithm" runs the greedy
     #    greedy stochastic for N times, and after each iteration
     #    stores the best solution found so far. It means that after
