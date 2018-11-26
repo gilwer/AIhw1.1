@@ -124,11 +124,12 @@ def relaxed_deliveries_problem():
     # 1. Run the stochastic greedy algorithm for 100 times.
     #    For each run, store the cost of the found solution.
     #    Store these costs in a list.
-    stochastic = GreedyStochastic(MSTAirDistHeuristic)
+
     costs = []
     anytime =[]
-    k= 50
+    k= 100
     for i in range(k):
+        stochastic = GreedyStochastic(MSTAirDistHeuristic)
         costs.append(stochastic.solve_problem(big_deliveries_prob).final_search_node.cost)
         anytime.append( min(anytime[i-1], costs[i]) if i > 0 else costs[i] )
     # 2. The "Anytime Greedy Stochastic Algorithm" runs the greedy
@@ -169,6 +170,8 @@ def strict_deliveries_problem():
     small_deliveries_strict_problem = StrictDeliveriesProblem(
         small_delivery, roads, inner_problem_solver=AStar(AirDistHeuristic))
 
+    run_astar_for_weights_in_range(MSTAirDistHeuristic,small_deliveries_strict_problem)
+    run_astar_for_weights_in_range(RelaxedDeliveriesHeuristic,small_deliveries_strict_problem)
     # Ex.26
     # TODO: Call here the function `run_astar_for_weights_in_range()`
     #       with `MSTAirDistHeuristic` and `big_deliveries_prob`.
@@ -182,7 +185,7 @@ def strict_deliveries_problem():
 
 def main():
   #  map_problem()
-    relaxed_deliveries_problem()
+  #  relaxed_deliveries_problem()
     strict_deliveries_problem()
 
 

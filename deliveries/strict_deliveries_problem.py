@@ -67,8 +67,22 @@ class StrictDeliveriesProblem(RelaxedDeliveriesProblem):
         For each successor, a pair of the successor state and the operator cost is yielded.
         """
         assert isinstance(state_to_expand, StrictDeliveriesState)
-
-        raise NotImplemented()  # TODO: remove!
+        for point in self.possible_stop_points:
+            if point in state_to_expand.dropped_so_far:
+                continue
+            cost = self._get_from_cache((state_to_expand.current_location.index, point.index))
+            if not cost:
+                map_prob = MapProblem(self.roads, state_to_expand.current_location.index, point.index)
+                cost = self.inner_problem_solver.solve_problem(map_prob).final_search_node
+                self._insert_to_cache((state_to_expand.current_location.index, point.index), cost)
+            if cost.cost > state_to_expand.fuel:
+                continue
+            if point in self.gas_stations:
+                yield (StrictDeliveriesState(point, state_to_expand.dropped_so_far, self.gas_tank_capacity), cost.cost)
+                continue
+            if point in self.drop_points:
+                yield StrictDeliveriesState(point, state_to_expand.dropped_so_far.union({point}),
+                                             state_to_expand.fuel - cost.cost), cost.cost
 
     def is_goal(self, state: GraphProblemState) -> bool:
         """
@@ -76,5 +90,4 @@ class StrictDeliveriesProblem(RelaxedDeliveriesProblem):
         TODO: implement this method!
         """
         assert isinstance(state, StrictDeliveriesState)
-
-        raise NotImplemented()  # TODO: remove!
+        return state.dropped_so_far == self.drop_points

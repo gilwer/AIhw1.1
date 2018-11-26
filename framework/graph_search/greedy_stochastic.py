@@ -73,7 +73,7 @@ class GreedyStochastic(BestFirstSearch):
         for i in range(n):
             P.append(pow(X[i].expanding_priority/alpha, -1 / self.T)/deno)
         res = np.random.choice(X, None, False, P)
-        self.T = self.T*self.T_scale_factor if self.T*self.T_scale_factor > 0 else self.T
+        self.T = self.T*self.T_scale_factor
         for state in X:
             if state == res:
                 continue
