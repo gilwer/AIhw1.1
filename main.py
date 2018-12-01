@@ -171,10 +171,6 @@ def strict_deliveries_problem():
         small_delivery, roads, inner_problem_solver=AStar(AirDistHeuristic))
 
     run_astar_for_weights_in_range(MSTAirDistHeuristic, small_deliveries_strict_problem)
-    # res = AStar(MSTAirDistHeuristic, 0.5).solve_problem(small_deliveries_strict_problem)
-    # print(res)
-    # res = AStar(MSTAirDistHeuristic, 0.55).solve_problem(small_deliveries_strict_problem)
-    # print(res)
     res = AStar(RelaxedDeliveriesHeuristic).solve_problem(small_deliveries_strict_problem)
     print(res)
 
