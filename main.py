@@ -149,7 +149,7 @@ def relaxed_deliveries_problem():
     #    (x-axis). Of course that the costs of A*, and deterministic
     #    greedy are not dependent with the iteration number, so
     #    these two should be represented by horizontal lines.
-
+    plt.plot(range(k), costs, label="stochastic")
     plt.plot(range(k), anytime, label="anytime")
     plt.plot(range(k), astar_res2, label="Astar")
     plt.plot(range(k), gredy_res, label="Greedy")
@@ -170,22 +170,28 @@ def strict_deliveries_problem():
     small_deliveries_strict_problem = StrictDeliveriesProblem(
         small_delivery, roads, inner_problem_solver=AStar(AirDistHeuristic))
 
-    run_astar_for_weights_in_range(MSTAirDistHeuristic,small_deliveries_strict_problem)
-    run_astar_for_weights_in_range(RelaxedDeliveriesHeuristic,small_deliveries_strict_problem)
+    run_astar_for_weights_in_range(MSTAirDistHeuristic, small_deliveries_strict_problem)
+    # res = AStar(MSTAirDistHeuristic, 0.5).solve_problem(small_deliveries_strict_problem)
+    # print(res)
+    # res = AStar(MSTAirDistHeuristic, 0.55).solve_problem(small_deliveries_strict_problem)
+    # print(res)
+    res = AStar(RelaxedDeliveriesHeuristic).solve_problem(small_deliveries_strict_problem)
+    print(res)
+
     # Ex.26
     # TODO: Call here the function `run_astar_for_weights_in_range()`
     #       with `MSTAirDistHeuristic` and `big_deliveries_prob`.
-    exit()  # TODO: remove!
+
 
     # Ex.28
     # TODO: create an instance of `AStar` with the `RelaxedDeliveriesHeuristic`,
     #       solve the `small_deliveries_strict_problem` with it and print the results (as before).
-    exit()  # TODO: remove!
+
 
 
 def main():
-    map_problem()
-    relaxed_deliveries_problem()
+   # map_problem()
+    #relaxed_deliveries_problem()
     strict_deliveries_problem()
 
 
