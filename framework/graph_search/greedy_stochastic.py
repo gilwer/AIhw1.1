@@ -73,8 +73,8 @@ class GreedyStochastic(BestFirstSearch):
         for i in range(n):
             P.append(pow(X[i].expanding_priority/alpha, -1 / self.T)/deno)
         res = np.random.choice(X, None, False, P)
-        self.T = self.T*self.T_scale_factor
-        for state in X:
+        self.T = self.T*self.T_scale_factor     # calculates T for next round
+        for state in X:     # reinserts states that where not chosen
             if state == res:
                 continue
             self.open.push_node(state)

@@ -86,7 +86,7 @@ def map_problem():
     res = astar.solve_problem(map_prob)
     print(res)
 
-    run_astar_for_weights_in_range(AirDistHeuristic,map_prob)
+    run_astar_for_weights_in_range(AirDistHeuristic, map_prob)
 
 
 
@@ -104,14 +104,14 @@ def relaxed_deliveries_problem():
     big_delivery = DeliveriesProblemInput.load_from_file('big_delivery.in', roads)
     big_deliveries_prob = RelaxedDeliveriesProblem(big_delivery)
 
-   #  astar = AStar(MaxAirDistHeuristic)
-   # res = astar.solve_problem(big_deliveries_prob)
-   #  print(res)
-   #
-   #  astar = AStar(MSTAirDistHeuristic)
-   #  res = astar.solve_problem(big_deliveries_prob)
-   #  print(res)
-  #  run_astar_for_weights_in_range(MSTAirDistHeuristic, big_deliveries_prob)
+    astar = AStar(MaxAirDistHeuristic)
+    res = astar.solve_problem(big_deliveries_prob)
+    print(res)
+
+    astar = AStar(MSTAirDistHeuristic)
+    res = astar.solve_problem(big_deliveries_prob)
+    print(res)
+    run_astar_for_weights_in_range(MSTAirDistHeuristic, big_deliveries_prob)
 
 
     # Ex.18
@@ -184,8 +184,8 @@ def strict_deliveries_problem():
 
 
 def main():
-  #  map_problem()
-  #  relaxed_deliveries_problem()
+    map_problem()
+    relaxed_deliveries_problem()
     strict_deliveries_problem()
 
 

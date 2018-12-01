@@ -79,6 +79,7 @@ class RelaxedDeliveriesHeuristic(HeuristicFunction):
 
         assert isinstance(self.problem, StrictDeliveriesProblem)
         assert isinstance(state, StrictDeliveriesState)
+        """ # creates and solves relaxed deliveries problem with current state as starting point  """
         problem_input = DeliveriesProblemInput("problem", state.current_location,
                                                self.problem.drop_points - state.dropped_so_far,
                                                self.problem.gas_stations, self.problem.gas_tank_capacity, state.fuel)
@@ -87,6 +88,6 @@ class RelaxedDeliveriesHeuristic(HeuristicFunction):
         if res:
             return res.cost
         else:
-            return np.Inf
+            return np.Inf           # returns inf if reached dead end state
 
 

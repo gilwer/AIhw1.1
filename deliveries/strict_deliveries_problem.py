@@ -72,6 +72,7 @@ class StrictDeliveriesProblem(RelaxedDeliveriesProblem):
                 continue
             cost = self._get_from_cache((state_to_expand.current_location.index, point.index))
             if not cost:
+                """if cost of source and target states are not cached solve map problem for them and cache result"""
                 map_prob = MapProblem(self.roads, state_to_expand.current_location.index, point.index)
                 cost = self.inner_problem_solver.solve_problem(map_prob).final_search_node
                 self._insert_to_cache((state_to_expand.current_location.index, point.index), cost)
